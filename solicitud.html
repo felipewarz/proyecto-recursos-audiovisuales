@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear Solicitud</title>
+</head>
+<body>
+
+<h2>Crear Solicitud de Préstamo</h2>
+
+<input type="number" id="usuario" placeholder="ID Usuario"><br><br>
+<input type="date" id="inicio"><br><br>
+<input type="date" id="fin"><br><br>
+
+<button onclick="crearSolicitud()">Crear Solicitud</button>
+
+<p id="mensaje"></p>
+
+<script>
+function crearSolicitud() {
+    const id_usuario = document.getElementById("usuario").value;
+    const fecha_inicio = document.getElementById("inicio").value;
+    const fecha_fin = document.getElementById("fin").value;
+
+    fetch("http://localhost:3000/solicitud", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id_usuario, fecha_inicio, fecha_fin })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+        document.getElementById("mensaje").innerText =
+            data.mensaje || data.error || "Respuesta recibida";
+    })
+    .catch(err => {
+        console.error(err);
+        document.getElementById("mensaje").innerText = "Error de conexión con el servidor";
+    });
+}
+</script>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recursos Audiovisuales</title>
+</head>
+<body>
+
+    <h2>Recursos audiovisuales disponibles</h2>
+
+    <button onclick="cargarRecursos()">Cargar recursos</button>
+
+    <table border="1" cellpadding="8" style="margin-top: 15px;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Recurso</th>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody id="tablaRecursos">
+        </tbody>
+    </table>
+
+    <script>
+        function cargarRecursos() {
+            fetch("http://localhost:3000/recursos")
+                .then(res => res.json())
+                .then(data => {
+                    const tabla = document.getElementById("tablaRecursos");
+                    tabla.innerHTML = "";
+
+                    data.forEach(recurso => {
+                        tabla.innerHTML += `
+                            <tr>
+                                <td>${recurso.id_recurso}</td>
+                                <td>${recurso.nombre}</td>
+                                <td>${recurso.descripcion}</td>
+                                <td>${recurso.id_categoria}</td>
+                                <td>${recurso.id_estado}</td>
+                            </tr>
+                        `;
+                    });
+                })
+                .catch(error => {
+                    console.error("Error al cargar recursos:", error);
+                });
+        }
+    </script>
+
+</body>
+</html>
